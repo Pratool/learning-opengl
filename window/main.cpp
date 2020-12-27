@@ -9,6 +9,14 @@ void framebufferSizeCallback(GLFWwindow *window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
+void processInput(GLFWwindow *window)
+{
+    if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_ESCAPE))
+    {
+        glfwSetWindowShouldClose(window, true);
+    }
+}
+
 int main()
 {
     std::cerr << "Windowing application." << std::endl;
@@ -40,6 +48,8 @@ int main()
 
     while (not glfwWindowShouldClose(window))
     {
+        processInput(window);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
