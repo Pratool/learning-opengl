@@ -15,6 +15,12 @@ const char *vertexShaderSource = "#version 330 core\n"
     "{\n"
     "  gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0F);\n"
     "}\0";
+const char *fragmentShaderSource = "#version 330 core\n"
+    "out vec4 FragColor;\n"
+    "void main()\n"
+    "{\n"
+    "  FragColor = vec4(1.0F, 0.5F, 0.2F, 1.0F);\n"
+    "}\0";
 
 void framebufferSizeCallback(GLFWwindow *window, int width, int height)
 {
@@ -65,18 +71,32 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
+    int shaderCompileSuccess;
+    char shaderInfoLog[512];
+
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
     glCompileShader(vertexShader);
 
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (not static_cast<bool>(success))
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &shaderCompileSuccess);
+    if (not static_cast<bool>(shaderCompileSuccess))
     {
-        glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
+        glGetShaderInfoLog(vertexShader, 512, nullptr, shaderInfoLog);
         std::cerr << "Failed to compile vertex shader." << std::endl
-                  << infoLog << std::endl;
+                  << shaderInfoLog << std::endl;
+    }
+
+
+    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
+    glCompileShader(fragmentShader);
+
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &shaderCompileSuccess);
+    if (not static_cast<bool>(shaderCompileSuccess))
+    {
+        glGetShaderInfoLog(fragmentShader, 512, nullptr, shaderInfoLog);
+        std::cerr << "Failed to compile fragment shader." << std::endl
+                  << shaderInfoLog << std::endl;
     }
 
 
