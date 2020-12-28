@@ -100,6 +100,22 @@ int main()
     }
 
 
+    unsigned int shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &shaderCompileSuccess);
+    if (not static_cast<bool>(shaderCompileSuccess))
+    {
+        glGetProgramInfoLog(shaderProgram, 512, nullptr, shaderInfoLog);
+        std::cerr << "Failed to link shader program." << std::endl
+                  << shaderInfoLog << std::endl;
+    }
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+
     while (not glfwWindowShouldClose(window))
     {
         processInput(window);
