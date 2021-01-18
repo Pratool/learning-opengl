@@ -10,5 +10,6 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 set(CMAKE_CXX_STANDARD 17)
 
+add_subdirectory(6.837)
 add_subdirectory(glad)
 add_subdirectory(window)
